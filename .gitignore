@@ -1,0 +1,5 @@
+node_modules/
+screenshots/
+screenshot.js
+*.zip
+.DS_Store
