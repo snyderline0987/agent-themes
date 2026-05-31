@@ -43,6 +43,12 @@ app.post('/api/generate', async (req, res) => {
 
   try {
     const team = await generateTeam(theme.trim(), apiKeys);
+    // Remove any existing team with the same theme name
+    for (const [id, data] of teams) {
+      if ((data.team.name || data.theme).toLowerCase() === (team.name || theme).toLowerCase()) {
+        teams.delete(id);
+      }
+    }
     teams.set(teamId, { theme: theme.trim(), team, createdAt: new Date().toISOString() });
     res.json({ teamId, team });
   } catch (err) {

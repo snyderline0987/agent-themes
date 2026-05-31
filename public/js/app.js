@@ -80,7 +80,15 @@ function renderGallery(teams) {
   const grid = $('gallery-grid');
   const empty = $('gallery-empty');
 
-  if (!teams || teams.length === 0) {
+  // Dedupe by theme name — keep latest only
+  const seen = new Map();
+  for (const t of teams) {
+    const key = (t.team.name || t.theme).toLowerCase();
+    seen.set(key, t);
+  }
+  const unique = [...seen.values()];
+
+  if (!unique || unique.length === 0) {
     grid.style.display = 'none';
     empty.style.display = 'block';
     return;
@@ -90,7 +98,7 @@ function renderGallery(teams) {
   empty.style.display = 'none';
   grid.innerHTML = '';
 
-  teams.forEach(entry => {
+  unique.forEach(entry => {
     const team = entry.team;
     const count = team.agents ? team.agents.length : 0;
 
@@ -216,11 +224,22 @@ async function copyToAgent(teamId) {
     if (!res.ok) throw new Error('Failed');
     const { prompt } = await res.json();
 
-    await navigator.clipboard.writeText(prompt);
+    // Fallback for non-secure contexts (tunnels, HTTP)
+    if (navigator.clipboard && window.isSecureContext) {
+      await navigator.clipboard.writeText(prompt);
+    } else {
+      const ta = document.createElement('textarea');
+      ta.value = prompt;
+      ta.style.cssText = 'position:fixed;left:-9999px';
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
     showToast('✓ Copied to clipboard — paste into any agent');
   } catch (err) {
     console.error(err);
-    alert('Copy failed. Try the Download button instead.');
+    showToast('⚠ Copy failed — use Download instead');
   }
 }
 
