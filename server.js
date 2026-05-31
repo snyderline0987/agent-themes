@@ -23,8 +23,13 @@ app.get('/api/teams', (req, res) => {
         name: data.team.name,
         description: data.team.description,
         sources: data.team.sources || [],
+        hierarchy: data.team.hierarchy || null,
         agents: (data.team.agents || []).map(a => ({
           name: a.name, role: a.role, emoji: a.emoji,
+          vibe: a.vibe, oneLiner: a.oneLiner,
+          soul: a.soul, style: a.style,
+          roleDescription: a.roleDescription,
+          responsibilities: a.responsibilities
         }))
       },
       createdAt: data.createdAt
