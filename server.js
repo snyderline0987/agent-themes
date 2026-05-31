@@ -89,6 +89,13 @@ app.put('/api/team/:teamId', (req, res) => {
   res.json({ ok: true });
 });
 
+// ─── Route: Delete team ────────────────────────────────────
+app.delete('/api/team/:teamId', (req, res) => {
+  const existed = teams.delete(req.params.teamId);
+  if (!existed) return res.status(404).json({ error: 'Team not found' });
+  res.json({ ok: true });
+});
+
 // ─── Route: Download zip ──────────────────────────────────
 app.get('/api/download/:teamId', (req, res) => {
   const data = teams.get(req.params.teamId);

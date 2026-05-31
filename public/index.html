@@ -133,6 +133,24 @@
             <div id="modal-body"></div>
           </div>
         </div>
+
+        <!-- API Key warning modal -->
+        <div id="key-modal" class="modal">
+          <div class="modal-content" style="max-width:480px;text-align:center;padding:48px 32px">
+            <div style="font-size:48px;margin-bottom:16px">🔑</div>
+            <h2 style="margin-bottom:8px;font-size:22px">No API Key Set</h2>
+            <p style="color:#999;margin-bottom:24px;line-height:1.5">
+              To generate custom themes like <strong id="key-modal-theme" style="color:#eee"></strong>,
+              add an LLM API key (Gemini, OpenRouter, or OpenAI) in Settings.
+              <br><br>
+              <span style="color:#666;font-size:13px">Pre-built themes (Breaking Bad, Ocean's Eleven, Star Trek, etc.) work without keys.</span>
+            </p>
+            <div style="display:flex;gap:12px;justify-content:center">
+              <button class="btn-secondary" id="key-modal-skip" style="padding:12px 24px">Skip</button>
+              <button class="btn-primary" id="key-modal-open" style="padding:12px 24px">⚙️ Open Settings</button>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
   </div>

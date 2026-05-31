@@ -28,6 +28,11 @@ function getApiPayload() {
   return Object.keys(apiKeys).length > 0 ? apiKeys : undefined;
 }
 
+function hasKeys() {
+  const keys = loadKeys();
+  return !!(keys.llmProvider && keys.llmKey);
+}
+
 // Settings panel
 $('settings-btn').addEventListener('click', () => {
   const panel = $('settings-panel');
@@ -121,9 +126,10 @@ function renderGallery(teams) {
         </div>
       </div>
       <div class="gallery-card-actions">
-        <button class="btn-secondary view-btn">View Team</button>
-        <button class="btn-secondary copy-btn-card">📋 Copy</button>
+        <button class="btn-secondary view-btn">View</button>
+        <button class="btn-secondary copy-btn-card">📋</button>
         <button class="btn-secondary dl-btn">⬇</button>
+        <button class="btn-secondary btn-delete delete-btn" title="Delete team">🗑️</button>
       </div>
     `;
 
@@ -140,6 +146,14 @@ function renderGallery(teams) {
     card.querySelector('.dl-btn').addEventListener('click', e => {
       e.stopPropagation();
       window.location.href = `/api/download/${entry.id}`;
+    });
+
+    card.querySelector('.delete-btn').addEventListener('click', async e => {
+      e.stopPropagation();
+      if (confirm(`Delete "${team.name || entry.theme}"?`)) {
+        await fetch(`/api/team/${entry.id}`, { method: 'DELETE' });
+        loadGallery();
+      }
     });
 
     card.addEventListener('click', () => openTeam(entry.id, team));
@@ -180,6 +194,12 @@ document.querySelectorAll('.pick').forEach(btn => {
 
 // ─── Generate ─────────────────────────────────────────────
 async function generateTeam(theme) {
+  // Check if this is a custom theme and no API keys set
+  if (!hasKeys()) {
+    // Try pre-built first — server handles it, but warn for custom themes
+    // We'll show the warning only if generation fails or returns generic data
+  }
+
   document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
   document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
   $('step-loading').classList.add('active');
@@ -206,13 +226,43 @@ async function generateTeam(theme) {
     renderTeam(currentTeam);
     $('step-preview').classList.add('active');
     loadGallery();
+
+    // Show API key hint if no hierarchy (generic fallback was used)
+    if (!data.team.hierarchy && !hasKeys()) {
+      showToast('💡 Add an LLM API key in ⚙️ Settings for richer results with custom themes');
+    }
   } catch (err) {
     console.error(err);
-    alert(`Error: ${err.message}`);
+    if (!hasKeys() && err.message.includes('API key')) {
+      showKeyModal(theme);
+    } else {
+      alert(`Error: ${err.message}`);
+    }
     $('step-loading').classList.remove('active');
     switchTab('create');
   }
 }
+
+// ─── API Key Modal ────────────────────────────────────────
+function showKeyModal(theme) {
+  const modal = $('key-modal');
+  $('key-modal-theme').textContent = theme;
+  modal.classList.add('active');
+}
+
+$('key-modal-skip').addEventListener('click', () => {
+  $('key-modal').classList.remove('active');
+});
+
+$('key-modal-open').addEventListener('click', () => {
+  $('key-modal').classList.remove('active');
+  $('settings-panel').style.display = 'block';
+  const keys = loadKeys();
+  $('llm-provider').value = keys.llmProvider || '';
+  $('llm-key').value = keys.llmKey || '';
+  $('img-provider').value = keys.imgProvider || '';
+  $('img-key').value = keys.imgKey || '';
+});
 
 // ─── Copy to Agent ────────────────────────────────────────
 async function copyToAgent(teamId) {
@@ -247,7 +297,7 @@ function showToast(msg) {
   const toast = $('copy-toast');
   toast.textContent = msg;
   toast.style.display = 'block';
-  setTimeout(() => { toast.style.display = 'none'; }, 2500);
+  setTimeout(() => { toast.style.display = 'none'; }, 3000);
 }
 
 $('copy-btn').addEventListener('click', () => copyToAgent());
@@ -319,7 +369,6 @@ function buildOrgTree(name, tree, agentMap, isRoot) {
   const children = tree[name];
   if (!children || children.length === 0) return node;
 
-  // Node card + child <ul> all inside one element (the caller wraps in <li>)
   const frag = document.createDocumentFragment();
   frag.appendChild(node);
   const ul = document.createElement('ul');
@@ -351,7 +400,7 @@ function createCard(agent) {
   return card;
 }
 
-// ─── Modal ────────────────────────────────────────────────
+// ─── Agent Detail Modal ───────────────────────────────────
 function openModal(agent) {
   $('modal-body').innerHTML = `
     <div class="modal-agent-header">
