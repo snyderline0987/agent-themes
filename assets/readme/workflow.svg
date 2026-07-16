@@ -1,0 +1,73 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     width="1200" height="260" viewBox="0 0 1200 260"
+     role="img" aria-labelledby="title desc">
+  <title id="title">How Agent Themes works</title>
+  <desc id="desc">Four steps: type a theme, resolve it from pre-built themes or live LLM research, preview the team as an org chart, then export a zip or a single copy-paste prompt.</desc>
+
+  <rect width="1200" height="260" rx="26" fill="#0a0a0a"/>
+  <rect x="0.5" y="0.5" width="1199" height="259" rx="25.5" fill="none" stroke="#222222"/>
+
+  <!-- Connectors -->
+  <g stroke="#333333" stroke-width="1.5" fill="none">
+    <path d="M 306 130 H 324"/>
+    <path d="M 596 130 H 614"/>
+    <path d="M 886 130 H 904"/>
+  </g>
+  <g fill="#e50914">
+    <path d="M 324 123 L 334 130 L 324 137 Z"/>
+    <path d="M 614 123 L 624 130 L 614 137 Z"/>
+    <path d="M 904 123 L 914 130 L 904 137 Z"/>
+  </g>
+
+  <g font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif">
+
+    <!-- 01 · Type a theme -->
+    <g id="step-theme">
+      <rect x="46" y="46" width="260" height="168" rx="12" fill="#141414" stroke="#222222"/>
+      <text x="70" y="84" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="16" fill="#e50914">01</text>
+      <text x="98" y="84" font-size="18" font-weight="600" fill="#f0f0f0">Type a theme</text>
+      <rect x="70" y="108" width="212" height="44" rx="8" fill="#1a1a1a" stroke="#2a2a2a"/>
+      <text x="86" y="136" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="15" fill="#f0f0f0">"Breaking Bad"</text>
+      <text x="70" y="186" font-size="14" fill="#999999">Any movie, series, or game</text>
+    </g>
+
+    <!-- 02 · Resolve -->
+    <g id="step-resolve">
+      <rect x="336" y="46" width="260" height="168" rx="12" fill="#141414" stroke="#222222"/>
+      <text x="360" y="84" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="16" fill="#e50914">02</text>
+      <text x="388" y="84" font-size="18" font-weight="600" fill="#f0f0f0">Cast the team</text>
+      <rect x="360" y="102" width="212" height="38" rx="8" fill="#0a0a0a" stroke="#2a2a2a"/>
+      <text x="374" y="126" font-size="14" fill="#f0f0f0">Pre-built theme &#8212; no keys</text>
+      <rect x="360" y="148" width="212" height="38" rx="8" fill="#0a0a0a" stroke="#2a2a2a"/>
+      <text x="374" y="166" font-size="14" fill="#f0f0f0">LLM research &#8212; your key</text>
+      <text x="374" y="181" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#666666">GEMINI / OPENROUTER / OPENAI</text>
+    </g>
+
+    <!-- 03 · Preview -->
+    <g id="step-preview">
+      <rect x="626" y="46" width="260" height="168" rx="12" fill="#141414" stroke="#222222"/>
+      <text x="650" y="84" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="16" fill="#e50914">03</text>
+      <text x="678" y="84" font-size="18" font-weight="600" fill="#f0f0f0">Preview the chart</text>
+      <!-- mini org tree glyph -->
+      <g>
+        <rect x="712" y="104" width="88" height="26" rx="6" fill="#0a0a0a" stroke="#e50914"/>
+        <path d="M 756 130 V 142 M 726 142 H 786 M 726 142 V 152 M 786 142 V 152" fill="none" stroke="#333333" stroke-width="1.5"/>
+        <rect x="694" y="152" width="64" height="24" rx="6" fill="#0a0a0a" stroke="#2a2a2a"/>
+        <rect x="754" y="152" width="64" height="24" rx="6" fill="#0a0a0a" stroke="#2a2a2a"/>
+      </g>
+      <text x="650" y="200" font-size="14" fill="#999999">Hierarchy + full character sheets</text>
+    </g>
+
+    <!-- 04 · Export -->
+    <g id="step-export">
+      <rect x="916" y="46" width="238" height="168" rx="12" fill="#141414" stroke="#222222"/>
+      <text x="940" y="84" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="16" fill="#e50914">04</text>
+      <text x="968" y="84" font-size="18" font-weight="600" fill="#f0f0f0">Deploy it</text>
+      <rect x="940" y="102" width="190" height="38" rx="8" fill="#e50914"/>
+      <text x="954" y="126" font-size="14" font-weight="600" fill="#ffffff">&#8595; Zip &#8212; files per agent</text>
+      <rect x="940" y="148" width="190" height="38" rx="8" fill="#0a0a0a" stroke="#2a2a2a"/>
+      <text x="954" y="172" font-size="14" fill="#f0f0f0">Copy &#8212; one big prompt</text>
+      <text x="940" y="203" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="#666666">SOUL.md &#183; agent.json &#183; compose</text>
+    </g>
+  </g>
+</svg>
